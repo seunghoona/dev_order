@@ -1,13 +1,12 @@
 package com.seunghoona.kmong.order.dto;
 
 import com.seunghoona.kmong.order.domain.Product;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CreateProduct {
     private String name;
     private long amount;

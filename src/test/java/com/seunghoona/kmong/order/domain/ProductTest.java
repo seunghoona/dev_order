@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProductTest {
+public class ProductTest {
 
     public static final String 블로그_상품 = "블로그_상품";
     public static final int 블로그_상품금액 = 1000;

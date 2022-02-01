@@ -1,8 +1,9 @@
 package com.seunghoona.kmong.order.application;
 
+import com.seunghoona.kmong.order.domain.Product;
 import com.seunghoona.kmong.order.domain.ProductRepo;
 import com.seunghoona.kmong.order.dto.CreateProduct;
-import com.seunghoona.kmong.order.dto.ProductDTO;
+import com.seunghoona.kmong.order.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,12 @@ public class ProductService {
 
     private final ProductRepo productRepo;
 
-    public void create(CreateProduct createProduct) {
-        productRepo.save(createProduct.toProduct());
+    public ProductResponse create(CreateProduct createProduct) {
+        Product savedProduct = productRepo.save(createProduct.toProduct());
+        return ProductResponse.of(savedProduct);
     }
 
-    public List<ProductDTO> list() {
-        return ProductDTO.ofList(productRepo.findAll());
+    public List<ProductResponse> list() {
+        return ProductResponse.ofList(productRepo.findAll());
     }
 }

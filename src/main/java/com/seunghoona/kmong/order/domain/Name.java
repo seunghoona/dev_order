@@ -1,12 +1,14 @@
 package com.seunghoona.kmong.order.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Getter
 @Embeddable
 @NoArgsConstructor
 @EqualsAndHashCode
