@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/kmong?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+      username: root
+      password: 1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kmong?useSSL=false&useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+
+logging:
+  level:
+    root: error
+    org:
+      springframework: warn
+    com.seunghoona.withpray: debug
+    org.hibernate.type.descriptor.sql: trace
