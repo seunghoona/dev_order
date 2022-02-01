@@ -25,6 +25,9 @@ spring:
     hibernate:
       ddl-auto: create
 
+  jackson:
+    default-property-inclusion: non_null
+
 logging:
   level:
     root: error
@@ -32,3 +35,4 @@ logging:
       springframework: warn
     com.seunghoona.withpray: debug
     org.hibernate.type.descriptor.sql: trace
+
