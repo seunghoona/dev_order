@@ -17,7 +17,7 @@ public class Email {
 
     private static final Pattern VALID_EMAIL = Pattern.compile("^([\\w\\.\\_\\-])*[a-zA-Z0-9]+([\\w\\.\\_\\-])*([a-zA-Z0-9])+([\\w\\.\\_\\-])+@([a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,8}$");
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true, updatable = false)
     @NotNull
     private String email;
 
