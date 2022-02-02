@@ -46,15 +46,15 @@ public class AcceptanceTest {
                 .build();
     }
 
-    public static ExtractableResponse<Response> get(String url, String name, RequestSpecification spec) {
-        return givenLog(name, spec)
+    public ExtractableResponse<Response> get(String url) {
+        return givenLog(url)
                 .get(url)
                 .then().log().all()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> post(String url, Object obj, String name, RequestSpecification spec) {
-        return givenLog(name, spec)
+    public ExtractableResponse<Response> post(String url, Object obj) {
+        return givenLog(url)
                 .when()
                 .body(obj)
                 .post(url)
@@ -62,8 +62,8 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    private static RequestSpecification givenLog(String name, RequestSpecification spec) {
-        return given(spec).log().all()
+    private RequestSpecification givenLog(String name) {
+        return given(this.spec).log().all()
                 .filter(document(name,
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())

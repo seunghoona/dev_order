@@ -19,8 +19,7 @@ public class ProductAcceptance extends AcceptanceTest {
     private CreateProduct 블로그상품;
     private CreateProduct 엑셀상품;
 
-    @Test
-    void 상품_생성한다() {
+    private void initData() {
         블로그상품 = CreateProduct.builder()
                 .name(블로그_상품)
                 .amount(블로그_상품금액)
@@ -30,6 +29,12 @@ public class ProductAcceptance extends AcceptanceTest {
                 .name(엑셀강의_상품)
                 .amount(엑셀강의_상품금액)
                 .build();
+    }
+
+    @Test
+    void 상품_생성한다() {
+        //given
+        initData();
 
         // when
         ExtractableResponse<Response> response = 상품_생성요청(블로그상품);
@@ -40,17 +45,8 @@ public class ProductAcceptance extends AcceptanceTest {
 
     @Test
     void 상품_조회한다() {
-        블로그상품 = CreateProduct.builder()
-                .name(블로그_상품)
-                .amount(블로그_상품금액)
-                .build();
-
-        엑셀상품 = CreateProduct.builder()
-                .name(엑셀강의_상품)
-                .amount(엑셀강의_상품금액)
-                .build();
-
-        // given
+        //given
+        initData();
         상품_생성요청(블로그상품);
         상품_생성요청(엑셀상품);
 
@@ -62,10 +58,10 @@ public class ProductAcceptance extends AcceptanceTest {
     }
 
     public ExtractableResponse<Response> 상품_생성요청(CreateProduct createProduct) {
-        return post(URL_PRODUCTS, createProduct, "products", spec);
+        return post(URL_PRODUCTS, createProduct);
     }
 
     public ExtractableResponse<Response> 상품_전체_조회요청() {
-        return get(URL_PRODUCTS, "products", spec);
+        return get(URL_PRODUCTS);
     }
 }
