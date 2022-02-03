@@ -2,8 +2,7 @@ package com.seunghoona.kmong.member.security.config;
 
 import com.seunghoona.kmong.member.security.filter.AuthenticationFilter;
 import com.seunghoona.kmong.member.security.filter.JwtTokenAuthenticationFilter;
-import com.seunghoona.kmong.member.security.handler.JwtFailureHandler;
-import com.seunghoona.kmong.member.security.handler.JwtSuccessHandler;
+import com.seunghoona.kmong.member.security.handler.AuthSuccessHandler;
 import com.seunghoona.kmong.member.security.provider.JwtAuthenticationProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +17,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -50,6 +50,10 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/products").authenticated()
                 .anyRequest().permitAll();
 
+        http.logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
+                .logoutSuccessHandler(authLogoutHandler());
+
     }
 
     @Bean
@@ -62,7 +66,6 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         AuthenticationFilter jwtAuthenticationFilter = new AuthenticationFilter();
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(successHandler());
-        jwtAuthenticationFilter.setAuthenticationFailureHandler(failureHandler());
         return jwtAuthenticationFilter;
     }
 
@@ -78,17 +81,18 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
-        return new JwtSuccessHandler();
+        return new AuthSuccessHandler();
     }
 
-    @Bean
-    public AuthenticationFailureHandler failureHandler() {
-        return new JwtFailureHandler();
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public LogoutSuccessHandler authLogoutHandler() {
+        return new AuthLogoutHandler();
     }
 
 }

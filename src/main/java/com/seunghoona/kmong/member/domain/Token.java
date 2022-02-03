@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -45,11 +44,14 @@ public class Token {
                 .compact();
     }
 
+    public String payload(String enterToken) {
+        final String token = subStrToken(enterToken);
+        verifyToken(token);
+        return getPayload(token);
+    }
 
-    public String payload(String token) {
-        final String tokenCode = token.substring(7);
-        valid(tokenCode);
-        return getPayload(tokenCode);
+    private String subStrToken(String token) {
+        return token.substring(7);
     }
 
     private String getPayload(String token) {
@@ -60,7 +62,7 @@ public class Token {
                 .getSubject();
     }
 
-    public boolean valid(String token) {
+    public boolean verifyToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)

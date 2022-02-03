@@ -3,12 +3,12 @@ package com.seunghoona.kmong.member.aceeptance;
 import com.seunghoona.kmong.AcceptanceTest;
 import com.seunghoona.kmong.member.dto.JoinRequest;
 import com.seunghoona.kmong.member.dto.JoinResponse;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,30 +56,21 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.jsonPath().getString("token")).isNotBlank();
+        assertThat(response.header("content-type")).startsWith(MediaType.APPLICATION_JSON_VALUE);
     }
 
-    @Test
-    void 토큰요청() {
+/*    @Test
+    void 로그아웃() {
         // given
         회원가입_요청();
+        로그인_요청();
 
         // when
-        ExtractableResponse<Response> response = 로그인_요청();
+        ExtractableResponse<Response> response = get("members/logout");
 
-        RestAssured.given().log().all().auth().oauth2(response.jsonPath().getString("token"))
-                .when()
-                .get("/products")
-                .then()
-                .log().all()
-                .extract();
 
-        RestAssured.given().log().all().auth().oauth2(response.jsonPath().getString("token"))
-                .when()
-                .get("/products")
-                .then()
-                .log().all()
-                .extract();
-    }
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
+    }*/
 
     public ExtractableResponse<Response> 회원가입_요청() {
         회원 = JoinRequest.builder()

@@ -50,9 +50,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken createToken(UserDetails userDetails, HttpServletRequest request) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        return token;
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 }

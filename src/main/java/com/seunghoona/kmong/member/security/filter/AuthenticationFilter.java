@@ -31,7 +31,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         validIsNotPost(request);
-        LoginRequest loginRequest = fromMember(request);
+        LoginRequest loginRequest = toLoginRequest(request);
         Authentication token = createToken(loginRequest);
         return getAuthenticationManager().authenticate(token);
     }
@@ -42,7 +42,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
         }
     }
 
-    private LoginRequest fromMember(HttpServletRequest request) throws IOException {
+    private LoginRequest toLoginRequest(HttpServletRequest request) throws IOException {
         return objectMapper.readValue(request.getReader(), LoginRequest.class);
     }
 
