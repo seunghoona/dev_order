@@ -6,12 +6,14 @@ import com.seunghoona.kmong.order.ProductFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.seunghoona.kmong.member.MemberFixture.회원;
 import static com.seunghoona.kmong.order.ProductFixture.*;
+import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
 class OrdersRepoTest {
 
     @Autowired
@@ -33,6 +35,9 @@ class OrdersRepoTest {
         Orders orderNo = ordersRepo.save(Orders.create(savedProduct, savedMember));
 
         // then
-        Assertions.assertThat(orderNo.getOrderNo()).isEqualTo("2022010100000000010000000001");
+        String expectedOrderNo = orderNo.getOrderNo();
+        assertThat(expectedOrderNo).isNotBlank();
+        assertThat(expectedOrderNo).contains("KM");
+
     }
 }

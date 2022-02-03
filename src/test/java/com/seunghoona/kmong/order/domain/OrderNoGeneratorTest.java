@@ -1,5 +1,6 @@
 package com.seunghoona.kmong.order.domain;
 
+import com.seunghoona.kmong.common.utils.LocalDateTimeUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +19,10 @@ class OrderNoGeneratorTest {
         Orders orders = Orders.create(블로그_상품(), 회원());
 
         Serializable orderNo = orderNoGenerator.generate(null, orders);
-
-        assertThat(orderNo).isEqualTo("2022010100000000010000000001");
+        final String expectedOrderNo = String.valueOf(orderNo);
+        assertThat(orderNo).isNotNull();
+        assertThat(expectedOrderNo).startsWith(LocalDateTimeUtils.nowYear());
+        assertThat(expectedOrderNo).contains("KM");
     }
 
     @Test

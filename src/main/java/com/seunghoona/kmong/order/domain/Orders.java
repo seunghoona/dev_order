@@ -40,6 +40,7 @@ public class Orders extends BaseEntity {
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_orders_to_product_id"))
     private Product product;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus = OrderStatus.WAITING;
 
