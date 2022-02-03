@@ -21,6 +21,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AcceptanceTest {
+
     @LocalServerPort
     int port;
 
@@ -31,7 +32,8 @@ public class AcceptanceTest {
     final RestDocumentationExtension restDocumentation = new RestDocumentationExtension(
             "build/generated-snippets");
 
-    protected RequestSpecification spec;
+    protected static RequestSpecification spec;
+
 
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -39,21 +41,20 @@ public class AcceptanceTest {
             RestAssured.port = port;
             databaseCleanUp.afterPropertiesSet();
         }
-        databaseCleanUp.execute();
-        this.spec = new
-                RequestSpecBuilder()
+        spec = new RequestSpecBuilder()
                 .addFilter(documentationConfiguration(restDocumentation))
                 .build();
+        databaseCleanUp.execute();
     }
 
-    public ExtractableResponse<Response> get(String url) {
+    public static ExtractableResponse<Response> get(String url) {
         return givenLog(url)
                 .get(url)
                 .then().log().all()
                 .extract();
     }
 
-    public ExtractableResponse<Response> post(String url, Object obj) {
+    public static ExtractableResponse<Response> post(String url, Object obj) {
         return givenLog(url)
                 .when()
                 .body(obj)
@@ -62,8 +63,27 @@ public class AcceptanceTest {
                 .extract();
     }
 
-    private RequestSpecification givenLog(String name) {
-        return given(this.spec).log().all()
+    public static ExtractableResponse<Response> getAuth(String url, String token) {
+        return givenLog(url)
+                .auth().oauth2(token)
+                .get(url)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> postAuth(String url, Object obj, String token) {
+        return givenLog(url)
+                .auth().oauth2(token)
+                .when()
+                .body(obj)
+                .post(url)
+                .then().log().all()
+                .extract();
+    }
+
+
+    private static RequestSpecification givenLog(String name) {
+        return given(spec).log().all()
                 .filter(document(name,
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())

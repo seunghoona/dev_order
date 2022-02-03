@@ -11,19 +11,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
+import static com.seunghoona.kmong.member.MemberFixture.회원_이메일;
+import static com.seunghoona.kmong.member.MemberFixture.회원_패스워드;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class MemberRepoTest {
 
-    public static final String 회원_이메일  = "test@gmail.com";
-    public static final String 회원_패스워드 = "1234567";
     @Autowired
     private MemberRepo memberRepo;
 
     @Test
-    void 사용자정보및_권한조회() {
+    void 사용자_정보_조회_및_권한조회() {
         // given
         Member member = Member.of(회원_이메일, 회원_패스워드)
                 .encode(new BCryptPasswordEncoder());
@@ -39,5 +39,4 @@ class MemberRepoTest {
             assertThat(findMember.getRoles()).isEqualTo(Set.of(new SimpleGrantedAuthority(RoleStatus.ROLE_USER.name())));
         });
     }
-
 }

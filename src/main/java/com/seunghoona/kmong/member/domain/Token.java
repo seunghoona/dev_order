@@ -32,7 +32,7 @@ public class Token {
                 .build();
     }
 
-    private static String create(@NotNull String payload) {
+    public static String create(@NotNull String payload) {
         final Claims claims = Jwts.claims().setSubject(payload);
         final Date now = new Date();
 
@@ -75,5 +75,4 @@ public class Token {
             throw new IllegalArgumentException("잘못된 토큰정보입니다.");
         }
     }
-
 }

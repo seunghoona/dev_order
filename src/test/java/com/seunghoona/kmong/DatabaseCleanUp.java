@@ -1,7 +1,13 @@
 package com.seunghoona.kmong;
 
 import com.google.common.base.CaseFormat;
+import com.seunghoona.kmong.member.domain.Member;
+import com.seunghoona.kmong.member.domain.Token;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +21,8 @@ import java.util.stream.Collectors;
 @Service
 @ActiveProfiles("test")
 public class DatabaseCleanUp implements InitializingBean {
+
+    private static final Logger log = LoggerFactory.getLogger(DatabaseCleanUp.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -33,12 +41,10 @@ public class DatabaseCleanUp implements InitializingBean {
     public void execute() {
         entityManager.flush();
         entityManager.createNativeQuery("SET @@foreign_key_checks = 0").executeUpdate();
-
         for (String tableName : tableNames) {
             entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
             entityManager.createNativeQuery("ALTER TABLE " + tableName + " AUTO_INCREMENT = 1").executeUpdate();
         }
-
         entityManager.createNativeQuery("SET @@foreign_key_checks = 1").executeUpdate();
     }
 }
