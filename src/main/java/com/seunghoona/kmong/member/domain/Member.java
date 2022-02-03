@@ -38,6 +38,7 @@ public class Member {
 
     @OneToMany(fetch = LAZY, cascade = {PERSIST, MERGE})
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_member_to_roles"), nullable = false, updatable = false)
+    @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
     public static MemberCreate of(String email, String password) {

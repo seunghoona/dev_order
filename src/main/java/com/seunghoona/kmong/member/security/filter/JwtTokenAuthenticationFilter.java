@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -49,8 +50,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         return request.getHeader(AUTHORIZATION);
     }
 
-    private UsernamePasswordAuthenticationToken createToken(MemberContext memberContext) {
-        return new UsernamePasswordAuthenticationToken(memberContext, null, memberContext.getAuthorities());
+    private UsernamePasswordAuthenticationToken createToken(MemberContext userDetails) {
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
 }

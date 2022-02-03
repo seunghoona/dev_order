@@ -21,7 +21,7 @@ public class ProductAcceptance extends AcceptanceTest {
     public static final String URL_PRODUCTS = "/products";
     private ProductRequest 블로그상품;
     private ProductRequest 엑셀상품;
-    private String 토큰생성;
+    private String 토큰;
 
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -37,14 +37,14 @@ public class ProductAcceptance extends AcceptanceTest {
                 .build();
 
         // 토큰 생성
-        토큰생성 = MemberAcceptanceTest.토큰생성();
+        토큰 = MemberAcceptanceTest.토큰생성();
     }
 
     @Test
     void 상품_생성한다() {
 
         // when
-        ExtractableResponse<Response> response = 상품_생성요청(블로그상품);
+        ExtractableResponse<Response> response = 상품_생성요청(블로그상품, 토큰);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -52,21 +52,21 @@ public class ProductAcceptance extends AcceptanceTest {
 
     @Test
     void 상품_조회한다() {
-        상품_생성요청(블로그상품);
-        상품_생성요청(엑셀상품);
+        상품_생성요청(블로그상품, 토큰);
+        상품_생성요청(엑셀상품, 토큰);
 
         // when
-        ExtractableResponse<Response> response = 상품_전체_조회요청();
+        ExtractableResponse<Response> response = 상품_전체_조회요청(토큰);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    public ExtractableResponse<Response> 상품_생성요청(ProductRequest createProduct) {
-        return postAuth(URL_PRODUCTS, createProduct, 토큰생성);
+    public static ExtractableResponse<Response> 상품_생성요청(ProductRequest createProduct, String token) {
+        return postAuth(URL_PRODUCTS, createProduct, token);
     }
 
-    public ExtractableResponse<Response> 상품_전체_조회요청() {
-        return getAuth(URL_PRODUCTS, 토큰생성);
+    public static ExtractableResponse<Response> 상품_전체_조회요청(String token) {
+        return getAuth(URL_PRODUCTS, token);
     }
 }

@@ -10,9 +10,10 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 
+@Data
 @Builder
 @AllArgsConstructor
-@Data
+@NoArgsConstructor
 public class ProductResponse {
 
     private Long id;

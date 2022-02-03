@@ -10,7 +10,11 @@ import java.util.Collection;
 @Getter
 public class MemberContext extends User {
 
+    private Member member;
+
     public MemberContext(@NotNull Member member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getEmail(), member.getPassword(), authorities);
+        this.member = member;
     }
+
 }
