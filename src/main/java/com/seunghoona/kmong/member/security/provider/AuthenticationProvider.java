@@ -1,16 +1,16 @@
 package com.seunghoona.kmong.member.security.provider;
 
 import com.seunghoona.kmong.member.application.MemberService;
-import com.seunghoona.kmong.member.domain.Member;
+import com.seunghoona.kmong.member.domain.MemberContext;
+import com.seunghoona.kmong.member.security.token.AuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class JwtAuthenticationProvider implements AuthenticationProvider {
+public class AuthenticationProvider implements org.springframework.security.authentication.AuthenticationProvider {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -23,11 +23,11 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         final String enterEmail = obtainEmail(authentication);
         final String enterPassword = obtainPassword(authentication);
-        final Member findMember = (Member) memberService.loadUserByUsername(enterEmail);
+        final MemberContext memberContext = memberService.loadUserByUsername(enterEmail);
 
-        verifyPassword(enterPassword, findMember.getPassword());
+        verifyPassword(enterPassword, memberContext.getPassword());
 
-        return new UsernamePasswordAuthenticationToken(findMember, enterPassword, findMember.getAuthorities());
+        return new AuthenticationToken(memberContext);
     }
 
     private String obtainEmail(Authentication authentication) {
@@ -47,6 +47,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        return authentication.equals(AuthenticationToken.class);
     }
 }

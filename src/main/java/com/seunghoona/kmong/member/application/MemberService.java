@@ -2,6 +2,7 @@ package com.seunghoona.kmong.member.application;
 
 import com.seunghoona.kmong.member.domain.Email;
 import com.seunghoona.kmong.member.domain.Member;
+import com.seunghoona.kmong.member.domain.MemberContext;
 import com.seunghoona.kmong.member.domain.MemberRepo;
 import com.seunghoona.kmong.member.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,9 @@ public class MemberService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String enterEmail) throws UsernameNotFoundException {
-        return memberRepo.findByEmail(new Email(enterEmail))
+    public MemberContext loadUserByUsername(String enterEmail) throws UsernameNotFoundException {
+        Member member = memberRepo.findByEmail(new Email(enterEmail))
                 .orElseThrow(() -> new UsernameNotFoundException(enterEmail));
+        return new MemberContext(member, member.getRoles());
     }
 }

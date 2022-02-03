@@ -1,13 +1,14 @@
 package com.seunghoona.kmong.member.security.filter;
 
 import com.seunghoona.kmong.member.application.MemberService;
+import com.seunghoona.kmong.member.domain.Member;
+import com.seunghoona.kmong.member.domain.MemberContext;
 import com.seunghoona.kmong.member.domain.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -33,9 +34,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             final String bearerToken = obtainToken(request);
             if (bearerToken != null && bearerToken.startsWith(BEARER)) {
                 String email = token.payload(bearerToken);
-                UserDetails userDetails = memberService.loadUserByUsername(email);
-                AbstractAuthenticationToken authentication = createToken(userDetails, request);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                MemberContext memberContext = memberService.loadUserByUsername(email);
+                SecurityContextHolder.getContext().setAuthentication(createToken(memberContext));
             }
 
         } catch (Exception ex) {
@@ -49,8 +49,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         return request.getHeader(AUTHORIZATION);
     }
 
-    private UsernamePasswordAuthenticationToken createToken(UserDetails userDetails, HttpServletRequest request) {
-        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    private UsernamePasswordAuthenticationToken createToken(MemberContext memberContext) {
+        return new UsernamePasswordAuthenticationToken(memberContext, null, memberContext.getAuthorities());
     }
 
 }

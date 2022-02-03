@@ -3,11 +3,10 @@ package com.seunghoona.kmong.member.security.config;
 import com.seunghoona.kmong.member.security.filter.AuthenticationFilter;
 import com.seunghoona.kmong.member.security.filter.JwtTokenAuthenticationFilter;
 import com.seunghoona.kmong.member.security.handler.AuthSuccessHandler;
-import com.seunghoona.kmong.member.security.provider.JwtAuthenticationProvider;
+import com.seunghoona.kmong.member.security.provider.AuthenticationProvider;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -47,12 +45,14 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         // 권한 설정
         http
                 .authorizeRequests()
-                .antMatchers("/products").authenticated()
-                .anyRequest().permitAll();
+                .antMatchers("/members", "/members/login").permitAll()
+                .antMatchers("members/logout").hasRole("USER")
+                .antMatchers("/orders/**").hasRole("USER")
+                .antMatchers("/products/**").hasRole("USER")
+                .anyRequest().authenticated();
 
         http.logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessHandler(authLogoutHandler());
+                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"));
 
     }
 
@@ -70,8 +70,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider();
+    public org.springframework.security.authentication.AuthenticationProvider jwtAuthenticationProvider() {
+        return new AuthenticationProvider();
     }
 
     @Override
@@ -88,11 +88,6 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public LogoutSuccessHandler authLogoutHandler() {
-        return new AuthLogoutHandler();
     }
 
 }

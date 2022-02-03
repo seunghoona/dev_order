@@ -2,6 +2,7 @@ package com.seunghoona.kmong.member.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seunghoona.kmong.member.dto.LoginRequest;
+import com.seunghoona.kmong.member.security.token.AuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -47,7 +48,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
     }
 
     private AbstractAuthenticationToken createToken(LoginRequest loginRequest) {
-        return new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+        return new AuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
     }
 
 }
