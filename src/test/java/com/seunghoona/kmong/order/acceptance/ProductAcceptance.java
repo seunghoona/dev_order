@@ -3,18 +3,16 @@ package com.seunghoona.kmong.order.acceptance;
 
 import com.seunghoona.kmong.AcceptanceTest;
 import com.seunghoona.kmong.member.aceeptance.MemberAcceptanceTest;
-import com.seunghoona.kmong.member.domain.Member;
 import com.seunghoona.kmong.order.dto.ProductRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
-import static com.seunghoona.kmong.order.domain.ProductTest.*;
+import static com.seunghoona.kmong.order.ProductFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("상품 기능")

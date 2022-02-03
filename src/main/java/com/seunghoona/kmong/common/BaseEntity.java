@@ -20,7 +20,6 @@ public class BaseEntity {
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }
-
     public LocalDateTime getModifiedDate() {
         return modifiedDate;
     }

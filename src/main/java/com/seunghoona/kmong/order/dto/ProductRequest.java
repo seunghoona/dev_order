@@ -12,6 +12,6 @@ public class ProductRequest {
     private long amount;
 
     public Product toProduct() {
-        return Product.create(name, amount);
+        return Product.of(name, amount);
     }
 }

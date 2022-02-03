@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -23,10 +24,7 @@ public class Role {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @NotNull
     @Enumerated(STRING)
     private RoleStatus roleStatus = RoleStatus.ROLE_USER;
-
-    public Role(RoleStatus roleStatus) {
-        this.roleStatus = roleStatus;
-    }
 }
