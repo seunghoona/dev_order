@@ -25,4 +25,5 @@ public class MemberController {
         JoinResponse savedMember = memberService.join(joinRequest);
         return ResponseEntity.created(URI.create("/members/" + savedMember.getId())).body(savedMember);
     }
+
 }

@@ -3,9 +3,13 @@ package com.seunghoona.kmong.member.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+
+import java.util.Collection;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -13,7 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -39,7 +43,41 @@ public class Member {
         }
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return email.getEmail();
+    }
+
+    public String getPassword() {
+        return password.getPassword();
+    }
+
     public String getEmail() {
         return email.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

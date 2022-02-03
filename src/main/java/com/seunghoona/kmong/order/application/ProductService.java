@@ -6,10 +6,12 @@ import com.seunghoona.kmong.order.dto.CreateProduct;
 import com.seunghoona.kmong.order.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -20,6 +22,7 @@ public class ProductService {
         return ProductResponse.of(savedProduct);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponse> list() {
         return ProductResponse.ofList(productRepo.findAll());
     }

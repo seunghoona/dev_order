@@ -8,7 +8,7 @@
 |상품  |product |상품을 등록|
 |상품내역| orderHistory| 상품내역|
 
-- [ ] 회원가입
+- [x] 회원가입
   - id 회원별 고유한 아이디 
   - email 회원별 고유한 email 
   - password
