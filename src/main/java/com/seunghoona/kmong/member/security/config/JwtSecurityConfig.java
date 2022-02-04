@@ -26,7 +26,9 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations(),
+                        new AntPathRequestMatcher("/static/**"))
+                .antMatchers("/docs/**");
     }
 
     @Override
@@ -45,7 +47,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         // 권한 설정
         http
                 .authorizeRequests()
-                .antMatchers("/members", "/members/login").permitAll()
+                .antMatchers("/members", "/members/login","/static/**").permitAll()
                 .antMatchers("members/logout").hasRole("USER")
                 .antMatchers("/orders/**").hasRole("USER")
                 .antMatchers("/products/**").hasRole("USER")
