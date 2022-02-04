@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @PostMapping
-    public ResponseEntity<OrdersResponse> order(@RequestBody OrdersRequest orderRequest) {
+    public ResponseEntity<OrdersResponse> order(@Valid @RequestBody OrdersRequest orderRequest) {
         OrdersResponse orders = ordersService.order(orderRequest);
         return ResponseEntity.created(URI.create("/orders/" + orders.getOrderNo())).body(orders);
     }

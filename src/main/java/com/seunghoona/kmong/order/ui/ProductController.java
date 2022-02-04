@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest createProduct) {
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest createProduct) {
         ProductResponse product = productService.create(createProduct);
         return ResponseEntity.created(URI.create("/products/" + product.getId())).body(product);
     }

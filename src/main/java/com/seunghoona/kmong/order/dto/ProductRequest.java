@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.NegativeOrZero;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Data
 @Builder
@@ -15,7 +16,7 @@ public class ProductRequest {
     @NotNull(message = "필수입니다.")
     private String name;
 
-    @NegativeOrZero(message = "0 또는 0보다 작을 수 없습니다.")
+    @PositiveOrZero(message = "0 또는 0보다 작을 수 없습니다.")
     private long amount;
 
     public Product toProduct() {

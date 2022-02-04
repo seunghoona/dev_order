@@ -4,6 +4,7 @@ import com.seunghoona.kmong.member.application.MemberService;
 import com.seunghoona.kmong.member.domain.Member;
 import com.seunghoona.kmong.member.domain.MemberContext;
 import com.seunghoona.kmong.member.domain.Token;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,7 +34,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             final String bearerToken = obtainToken(request);
-            if (bearerToken != null && bearerToken.startsWith(BEARER)) {
+            if (bearerToken != null && bearerToken.startsWith(BEARER) && Strings.isNotBlank(bearerToken)) {
                 String email = token.payload(bearerToken);
                 MemberContext memberContext = memberService.loadUserByUsername(email);
                 SecurityContextHolder.getContext().setAuthentication(createToken(memberContext));
