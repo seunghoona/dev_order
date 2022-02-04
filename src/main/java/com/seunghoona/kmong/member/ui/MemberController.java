@@ -6,8 +6,10 @@ import com.seunghoona.kmong.member.dto.JoinResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -18,7 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JoinResponse> join(@RequestBody JoinRequest joinRequest) {
+    public ResponseEntity<JoinResponse> join(@Valid @RequestBody JoinRequest joinRequest) {
         JoinResponse savedMember = memberService.join(joinRequest);
         return ResponseEntity.created(URI.create("/members/" + savedMember.getId())).body(savedMember);
     }

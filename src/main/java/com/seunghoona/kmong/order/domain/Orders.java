@@ -21,6 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(of = "orderNo")
 public class Orders extends BaseEntity {
 
     @Id

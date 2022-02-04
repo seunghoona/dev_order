@@ -3,20 +3,21 @@ package com.seunghoona.kmong.order.acceptance;
 
 import com.seunghoona.kmong.AcceptanceTest;
 import com.seunghoona.kmong.member.aceeptance.MemberAcceptanceTest;
+import com.seunghoona.kmong.member.dto.JoinRequest;
 import com.seunghoona.kmong.order.dto.ProductRequest;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 
+import static com.seunghoona.kmong.member.aceeptance.MemberAcceptanceTest.회원_아이디;
+import static com.seunghoona.kmong.member.aceeptance.MemberAcceptanceTest.회원_패스워드;
 import static com.seunghoona.kmong.order.ProductFixture.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @DisplayName("상품 기능")
 public class ProductAcceptance extends AcceptanceTest {
@@ -25,6 +26,7 @@ public class ProductAcceptance extends AcceptanceTest {
     private ProductRequest 블로그상품;
     private ProductRequest 엑셀상품;
     private String 토큰;
+    private JoinRequest 회원;
 
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -39,8 +41,14 @@ public class ProductAcceptance extends AcceptanceTest {
                 .amount(엑셀강의_상품금액)
                 .build();
 
+        // 회원
+        회원 = JoinRequest.builder()
+                .email(회원_아이디)
+                .password(회원_패스워드)
+                .build();
+
         // 토큰 생성
-        토큰 = MemberAcceptanceTest.토큰생성();
+        토큰 = MemberAcceptanceTest.토큰요청(회원);
     }
 
     @Test
