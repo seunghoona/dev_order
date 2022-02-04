@@ -43,7 +43,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
         // when
         ExtractableResponse<Response> response = 회원가입된_계정으로_회원가입_요청();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
     }
 
     @Test

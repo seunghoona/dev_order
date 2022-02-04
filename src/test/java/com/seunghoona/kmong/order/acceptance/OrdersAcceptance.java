@@ -12,9 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static com.seunghoona.kmong.order.ProductFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.*;
 
 @DisplayName("주문 기능")
 public class OrdersAcceptance extends AcceptanceTest {
@@ -23,6 +25,7 @@ public class OrdersAcceptance extends AcceptanceTest {
     private String 토큰;
     private OrdersRequest 블로그_주문;
     private OrdersRequest 엑셀강의_주문;
+    private OrdersRequest 존재하지_않는_상품_주문;
 
     private ProductResponse 블로그상품;
     private ProductResponse 엑셀강의상품;
@@ -53,6 +56,10 @@ public class OrdersAcceptance extends AcceptanceTest {
         엑셀강의_주문 = OrdersRequest.builder()
                 .productId(엑셀강의상품.getId())
                 .build();
+
+        존재하지_않는_상품_주문 = OrdersRequest.builder()
+                .productId(999999L)
+                .build();
     }
 
     @Test
@@ -61,7 +68,16 @@ public class OrdersAcceptance extends AcceptanceTest {
         ExtractableResponse<Response> response = postAuth(URL_ORDERS, 블로그_주문, 토큰);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.statusCode()).isEqualTo(CREATED.value());
+    }
+
+    @Test
+    void 주문하는_상품이_존재하는_않는경우_예외() {
+        // then
+        ExtractableResponse<Response> response = postAuth(URL_ORDERS, 존재하지_않는_상품_주문, 토큰);
+
+        // when
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
     }
 
     @Test
@@ -75,6 +91,6 @@ public class OrdersAcceptance extends AcceptanceTest {
         ExtractableResponse<Response> response = getAuth(URL_ORDERS, 토큰);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 }
