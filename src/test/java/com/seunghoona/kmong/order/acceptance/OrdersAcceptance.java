@@ -74,10 +74,25 @@ public class OrdersAcceptance extends AcceptanceTest {
     @Test
     void 주문하기() {
         // when
-        ExtractableResponse<Response> response = postAuth(URL_ORDERS, 블로그_주문, 토큰);
+        ExtractableResponse<Response> response = postAuthDocs(URL_ORDERS, 블로그_주문, 토큰);
 
         // then
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
+    }
+
+
+    @Test
+    void 내가주문한_전체_내역조회() {
+
+        // given
+        postAuth(URL_ORDERS, 블로그_주문, 토큰);
+        postAuth(URL_ORDERS, 엑셀강의_주문, 토큰);
+
+        // when
+        ExtractableResponse<Response> response = getAuthDocs(URL_ORDERS, URL_ORDERS + "/list", 토큰);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
@@ -89,17 +104,4 @@ public class OrdersAcceptance extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
     }
 
-    @Test
-    void 내가주문한_전체_내역조회() {
-
-        // given
-        postAuth(URL_ORDERS, 블로그_주문, 토큰);
-        postAuth(URL_ORDERS, 엑셀강의_주문, 토큰);
-
-        // when
-        ExtractableResponse<Response> response = getAuth(URL_ORDERS, 토큰);
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
-    }
 }

@@ -47,32 +47,42 @@ public class AcceptanceTest {
         databaseCleanUp.execute();
     }
 
-    public static ExtractableResponse<Response> get(String url) {
-        return givenLog(url)
+    public static ExtractableResponse<Response> getAuth(String url, String token) {
+        return givenLog()
+                .auth().oauth2(token)
                 .get(url)
                 .then().log().all()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> post(String url, Object obj) {
-        return givenLog(url)
+    public static ExtractableResponse<Response> getAuthDocs(String url, String token) {
+        return getAuthDocs(url, url, token);
+    }
+
+    public static ExtractableResponse<Response> getAuthDocs(String url, String docs, String token) {
+        return givenLogDocs(docs)
+                .auth().oauth2(token)
+                .get(url)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> postAuthDocs(String url, Object obj, String token) {
+        return postAuthDocs(url, url, obj, token);
+    }
+
+    public static ExtractableResponse<Response> postAuthDocs(String url, String docs, Object obj, String token) {
+        return givenLogDocs(docs)
+                .auth().oauth2(token)
                 .when()
                 .body(obj)
                 .post(url)
-                .then().log().all()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> getAuth(String url, String token) {
-        return givenLog(url)
-                .auth().oauth2(token)
-                .get(url)
                 .then().log().all()
                 .extract();
     }
 
     public static ExtractableResponse<Response> postAuth(String url, Object obj, String token) {
-        return givenLog(url)
+        return givenLog()
                 .auth().oauth2(token)
                 .when()
                 .body(obj)
@@ -81,13 +91,25 @@ public class AcceptanceTest {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> postDocs(String url, Object obj) {
+        return givenLogDocs(url)
+                .when()
+                .body(obj)
+                .post(url)
+                .then().log().all()
+                .extract();
+    }
 
-    private static RequestSpecification givenLog(String name) {
+    private static RequestSpecification givenLog() {
+        return given(spec).log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    private static RequestSpecification givenLogDocs(String name) {
         return given(spec).log().all()
                 .filter(document(name,
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())
                 )).contentType(MediaType.APPLICATION_JSON_VALUE);
     }
-
 }

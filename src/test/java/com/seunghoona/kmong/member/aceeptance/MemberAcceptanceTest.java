@@ -22,8 +22,6 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     public static final String 회원_패스워드 = "1234566";
     private JoinRequest 회원;
 
-
-
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
         super.setUp(restDocumentation);
@@ -78,24 +76,26 @@ public class MemberAcceptanceTest extends AcceptanceTest {
                 .email(null)
                 .password(null)
                 .build();
-        ExtractableResponse<Response> 회원가입_요청 = 회원가입_요청(누락된_회원정보);
+        ExtractableResponse<Response> response = 회원가입_요청(누락된_회원정보);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
 /*    @Test
     void 로그아웃() {
         // given
-        회원가입_요청();
-        로그인_요청();
+        회원가입_요청(회원);
+        로그인_요청(회원);
 
         // when
-        ExtractableResponse<Response> response = get("members/logout");
-
+        ExtractableResponse<Response> response = 로그아웃_요청();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK);
     }*/
 
+
     public static ExtractableResponse<Response> 회원가입_요청(JoinRequest joinRequest) {
-        return post(URL_MEMBERS, joinRequest);
+        return postDocs(URL_MEMBERS, joinRequest);
     }
 
     private static void 회원가입_됨(JoinRequest joinRequest) {
@@ -107,7 +107,7 @@ public class MemberAcceptanceTest extends AcceptanceTest {
     }
 
     public static ExtractableResponse<Response> 로그인_요청(JoinRequest joinRequest) {
-        return post(URL_MEMBERS + "/login", joinRequest);
+        return postDocs(URL_MEMBERS + "/login", joinRequest);
     }
 
     public static String 토큰요청(JoinRequest joinRequest) {

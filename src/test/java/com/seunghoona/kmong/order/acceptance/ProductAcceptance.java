@@ -73,8 +73,8 @@ public class ProductAcceptance extends AcceptanceTest {
 
     @Test
     void 상품_조회한다() {
-        상품_생성요청(블로그상품, 토큰);
-        상품_생성요청(엑셀상품, 토큰);
+        상품_생성_됨(블로그상품, 토큰);
+        상품_생성_됨(엑셀상품, 토큰);
 
         // when
         ExtractableResponse<Response> response = 상품_전체_조회요청(토큰);
@@ -83,11 +83,15 @@ public class ProductAcceptance extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
+    public static void 상품_생성_됨(ProductRequest createProduct, String token) {
+        postAuth(URL_PRODUCTS, createProduct, token);
+    }
+
     public static ExtractableResponse<Response> 상품_생성요청(ProductRequest createProduct, String token) {
-        return postAuth(URL_PRODUCTS, createProduct, token);
+        return postAuthDocs(URL_PRODUCTS, "products/create", createProduct, token);
     }
 
     public static ExtractableResponse<Response> 상품_전체_조회요청(String token) {
-        return getAuth(URL_PRODUCTS, token);
+        return getAuthDocs(URL_PRODUCTS, "products/list", token);
     }
 }
