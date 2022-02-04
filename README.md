@@ -1,15 +1,5 @@
 
-
-#  실행
-## 도커 실행 
-> docker run -p 8080:8080 seunghoona/kmong:0.2
-
-## API 문서 
-> http://localhost:8080/docs/index.html
-
-
-
-## 용어정리 
+## 용어정리
 
 |용어|영문명|의미|
 |:---:|:---:|:---:|
@@ -17,6 +7,22 @@
 |상품  |product |회원이 주문하고자하는 상품 등록|
 |상문주문|orders|사용자는 상품을 주문|
 
+
+# 실행방법 
+## 도커 실행 
+> docker run -p 8080:8080 seunghoona/kmong:0.2
+
+## API 문서 
+> http://localhost:8080/docs/index.html
+
+
+## 의존성 구조
+
+![img.png](src/main/resources/static/docs/img.png)
+
+
+
+# 요구사항 명세서 
 
 - [x] 회원가입
   - id 회원별 고유한 아이디 
