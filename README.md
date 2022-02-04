@@ -1,5 +1,14 @@
 
 
+#  실행
+## 도커 실행 
+> docker run -p 8080:8080 seunghoona/kmong:0.2
+
+## API 문서 
+> http://localhost:8080/docs/index.html
+
+
+
 ## 용어정리 
 
 |용어|영문명|의미|
@@ -14,7 +23,7 @@
   - email 회원별 고유한 email 
   - password
 - [x] 로그인
-- [ ] 로그아웃
+- [x] 로그아웃
 - [x] 상품
   - 상품명, 상품금액
 - [x] 상품조회
@@ -53,4 +62,6 @@
 - 주문 상태 
 - 주문생성일자
 ---
+
+
 
